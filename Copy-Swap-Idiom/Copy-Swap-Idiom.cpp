@@ -32,17 +32,15 @@ template<typename T>
       std::fill_n (arr, size, initVal);
     }
 
-    Array (const Array &other)
+    Array (const Array &other) : Array(other.size)
     {
-      // delegated to copy assignment operator
-      *this = other;
+	    std::copy(other.arr , other.arr + size , arr);
     }
 
     Array (Array &&other) noexcept :
 	Array () // delegate initialization to default constructor to leave other obj in valid state after swap
     {
-      // delgated to move assignment operator
-      *this = std::move (other);
+      swap(*this,other);
     }
     /*
      * pass by value to delegate memory handling to compiler(copy constructor , Destructor)
