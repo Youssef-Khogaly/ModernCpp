@@ -44,22 +44,32 @@ template<typename T>
     }
     /*
      * pass by value to delegate memory handling to compiler(copy constructor , Destructor)
-     * and make it exception save so we will not enter this function if creation of memory failed
+     * and make it exception save so we will not enter this function if creation of memory failed 
+     * and by passing it by value we dont need to implement Movr assign operator
+     * if lhs is Lvalue -> copy constructor will be called
+     * and if lhs is Rvalue -> move constructor will be called :) 
+     *
+     * example:
+     *
+     * 
+     * Array <int> x{10};
+     * Array<int> y{5}; 
+     * x = y // make a copy by calling copy constructor for assign operator argument
+     * /////////////////////////
+     * Array <int> x{10};
+     * Array<int> y{5};
+     *
+     * x = std::move(y); // make a move by calling move constructor for assign operator argument
+     *
      * */
     Array&
-    operator = (Array lhs) noexcept
+    operator = (Array lhs) noexcept // copy/move assign constructor
     {
       swap (*this, lhs);
 
       return *this;
     }
-    Array&
-    operator = (Array &&lhs) noexcept
-    {
-      swap (*this, lhs);
-
-      return *this;
-    }
+    
     ~Array ()
     {
 
